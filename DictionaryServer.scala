@@ -42,12 +42,9 @@ object DictionaryServer extends App {
                 // Send string
                 val word: String = dIn.readUTF();
                 word.trim().toLowerCase() match {
-                  case "guru" => dOs.writeUTF(
-                      "an influential teacher or popular expert");
-                  case "love" => dOs.writeUTF(
-                      "the feeling of affection");
-                  case _=> dOs.writeUTF(
-                      "meaning not known");
+                  case "guru" => dOs.writeUTF("an influential teacher or popular expert");
+                  case "love" => dOs.writeUTF("the feeling of affection");
+                  case _=> dOs.writeUTF("meaning not known");
                   
                 }
             }
@@ -82,12 +79,9 @@ object DictionaryServer extends App {
             request.getLength());
         
         val sendRequestDefinition = requestDefinition.trim().toLowerCase() match {
-          case "guru" => 
-            "an influential teacher or popular expert".getBytes();
-          case 
-          "love" => "the feeling of affection".getBytes();
-          case _=> 
-            "meaning not known".getBytes();
+          case "guru" => "an influential teacher or popular expert".getBytes();
+          case "love" => "the feeling of affection".getBytes();
+          case _=> "meaning not known".getBytes();
           
         };
         

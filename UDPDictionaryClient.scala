@@ -28,7 +28,7 @@ object UDPDictionaryClient extends App {
           val reply: DatagramPacket = new DatagramPacket(buffer, buffer.length);
           s2.receive(reply);
           println(s"The meaning of $userWord : " + new String(reply.getData()).trim() + "\n");
-          println(Thread.currentThread().getId());
+          // println(Thread.currentThread().getId());
           
         }
         

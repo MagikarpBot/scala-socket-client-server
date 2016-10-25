@@ -24,7 +24,7 @@ object  TCPDictionaryClient extends App {
             dOs.writeUTF(userWord);
             val meaning = dIn.readUTF();
             println(s"The meaning of $userWord : $meaning");
-            println(Thread.currentThread().getId());
+            // println(Thread.currentThread().getId());
 
           }
     }
