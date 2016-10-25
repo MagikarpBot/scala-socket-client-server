@@ -1,5 +1,5 @@
 # scala-socket-client-server
 
-Client sends input request to Server
+TCP/UDP client and server
 
-Server replies with input meaning to Client
+Sends user input to server and server reply meaning
