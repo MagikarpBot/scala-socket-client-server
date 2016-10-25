@@ -6,7 +6,7 @@ import resource._;
 import scala.concurrent.ExecutionContext;
 
 /**
- * @author 12077236
+ * @author MagikarpBot
  */
 object DictionaryServer extends App {
   val ownExecutor = ExecutionContext.fromExecutor(new java.util.concurrent.ForkJoinPool(4));

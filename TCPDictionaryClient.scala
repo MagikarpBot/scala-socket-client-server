@@ -5,7 +5,7 @@ import java.net._;
 import resource._;
 
 /**
- * @author 12077236
+ * @author MagikarpBot
  */
 object  TCPDictionaryClient extends App {
   val tcpPort = 1234

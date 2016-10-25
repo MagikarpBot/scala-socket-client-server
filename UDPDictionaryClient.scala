@@ -3,6 +3,9 @@ package Dictionary
 import java.net._;
 import java.io._;
 
+/**
+ * @author MagikarpBot
+ */
 object UDPDictionaryClient extends App {
   var s2: DatagramSocket = null;
   val udpPort = 4321;
