@@ -6,10 +6,10 @@ import resource._;
 import scala.concurrent.ExecutionContext;
 
 /**
- * @author MagikarpBot
+ * @author 12077236
  */
 object DictionaryServer extends App {
-  val ownExecutor = ExecutionContext.fromExecutor(new java.util.concurrent.ForkJoinPool(4));
+  val ownExecutor = ExecutionContext.fromExecutor(new java.util.concurrent.ForkJoinPool(3));
   
   def executeMain(body: => Unit) = ownExecutor.execute(new Runnable() {
     def run = body;
@@ -29,6 +29,7 @@ object DictionaryServer extends App {
       while(true) {
         try {
           val s1: Socket = s.accept();
+          println(Thread.currentThread().getName());
           
           execute(s1) ({
             (client: Socket) =>
@@ -42,9 +43,12 @@ object DictionaryServer extends App {
                 // Send string
                 val word: String = dIn.readUTF();
                 word.trim().toLowerCase() match {
-                  case "guru" => dOs.writeUTF("an influential teacher or popular expert");
-                  case "love" => dOs.writeUTF("the feeling of affection");
-                  case _=> dOs.writeUTF("meaning not known");
+                  case "guru" => dOs.writeUTF(
+                      "an influential teacher or popular expert");
+                  case "love" => dOs.writeUTF(
+                      "the feeling of affection");
+                  case _=> dOs.writeUTF(
+                      "meaning not known");
                   
                 }
             }
@@ -65,33 +69,51 @@ object DictionaryServer extends App {
     val udpPort = 4321;
     
     try {
-      s2 = new DatagramSocket(udpPort);
+      val s2 = managed(new DatagramSocket(udpPort));
+      println(Thread.currentThread().getName());
       
-      val buffer: Array[Byte] = Array.ofDim[Byte](99999);
-      
-      while (true) {
-        val request: DatagramPacket = new DatagramPacket(buffer , buffer.length);
-        s2.receive(request);
-        
-        var requestDefinition = new String(
-            request.getData() ,
-            0 ,
-            request.getLength());
-        
-        val sendRequestDefinition = requestDefinition.trim().toLowerCase() match {
-          case "guru" => "an influential teacher or popular expert".getBytes();
-          case "love" => "the feeling of affection".getBytes();
-          case _=> "meaning not known".getBytes();
+      for (aSocket <- s2) {
+        while (true) {
+          val buffer: Array[Byte] = Array.ofDim[Byte](99999);
+          val request: DatagramPacket = new DatagramPacket(buffer , buffer.length);
+          aSocket.receive(request);
           
-        };
+          execute(request) {
+            request => {
+              var requestDefinition = new String(request.getData());
         
-        val reply: DatagramPacket = new DatagramPacket(
-          sendRequestDefinition ,
-          sendRequestDefinition.length ,
-          request.getAddress() ,
-          request.getPort());
-        s2.send(reply);
-        
+              requestDefinition.trim().toLowerCase() match {
+                case "guru" => 
+                  val message = new String("an influential teacher or popular expert").getBytes();
+                  val reply: DatagramPacket = new DatagramPacket(
+                      message ,
+                      message.length ,
+                      request.getAddress() ,
+                      request.getPort());
+                  aSocket.send(reply);
+                  
+                case "love" => 
+                  val message = new String("the feeling of affection").getBytes();
+                  val reply: DatagramPacket = new DatagramPacket(
+                      message ,
+                      message.length ,
+                      request.getAddress() ,
+                      request.getPort());
+                  aSocket.send(reply);
+              
+                case _=> 
+                  val message = new String("meaning not known").getBytes();
+                val reply: DatagramPacket = new DatagramPacket(
+                      message ,
+                      message.length ,
+                      request.getAddress() ,
+                      request.getPort());
+                  aSocket.send(reply);
+          
+              }  
+            }
+          }
+        }
       }
     }
     
@@ -100,13 +122,8 @@ object DictionaryServer extends App {
       case e: IOException     => println("IO: " + e.getMessage());
       
     }
-    
-    finally {
-     if (s2 != null) s2.close();
-      
-    }
   }
-  
+
   while (true) {
     Thread.sleep(4000);
  

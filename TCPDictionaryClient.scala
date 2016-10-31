@@ -5,11 +5,11 @@ import java.net._;
 import resource._;
 
 /**
- * @author MagikarpBot
+ * @author 12077236
  */
 object  TCPDictionaryClient extends App {
   val tcpPort = 1234
-  val address: InetAddress = InetAddress.getByName("localhost");
+  val address = InetAddress.getByName("localhost");
   println("TCP Client");
   
   while (true) {
@@ -20,12 +20,11 @@ object  TCPDictionaryClient extends App {
           dOs <- managed(new DataOutputStream(s1Out));
           s1In <- managed(s1.getInputStream);
           dIn <- managed(new DataInputStream(s1In))) {
-            val userWord = readLine("Enter word : ");
-            dOs.writeUTF(userWord);
+            val word = readLine("Enter word : ");
+            dOs.writeUTF(word);
             val meaning = dIn.readUTF();
-            println(s"The meaning of $userWord : $meaning");
-            // println(Thread.currentThread().getId());
-
+            println(s"The meaning of $word : $meaning");
+            
           }
     }
     

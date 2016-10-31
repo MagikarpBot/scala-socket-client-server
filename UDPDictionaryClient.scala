@@ -3,9 +3,6 @@ package Dictionary
 import java.net._;
 import java.io._;
 
-/**
- * @author MagikarpBot
- */
 object UDPDictionaryClient extends App {
   var s2: DatagramSocket = null;
   val udpPort = 4321;
@@ -28,7 +25,6 @@ object UDPDictionaryClient extends App {
           val reply: DatagramPacket = new DatagramPacket(buffer, buffer.length);
           s2.receive(reply);
           println(s"The meaning of $userWord : " + new String(reply.getData()).trim() + "\n");
-          // println(Thread.currentThread().getId());
           
         }
         
